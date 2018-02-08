@@ -143,9 +143,9 @@ class automater extends Module
         $products = $this->getProductsFromAPI();
         if ($products) {
             foreach ($products as $product) {
-                $productid = $this->getProductByAutomaterProductId($product['id']);
+                $productid = $this->getProductByAutomaterProductId($product->getId());
                 if ($productid) {
-                    $qty = $product['available'];
+                    $qty = $product->getAvailableCodes();
                     StockAvailable::setQuantity((int)$productid, 0, $qty, $this->defaultShopId);
                 }
             }
