@@ -1,0 +1,15 @@
+{
+  "name": "automater-pl/prestashop-1.7",
+  "description": "Automater plugin for Prestashop 1.7.x.",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Automater sp. z o.o.",
+      "email": "kontakt@automater.pl"
+    }
+  ],
+  "require": {
+    "automater-pl/rest-php-sdk": "dev-master-prestashop17"
+  }
+}
