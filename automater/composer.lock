@@ -41,7 +41,7 @@
                 }
             ],
             "description": "PHP SDK for Automater REST API",
-            "time": "2018-02-08T14:59:22+00:00"
+            "time": "2018-02-08 14:59:22"
         },
         {
             "name": "doctrine/collections",

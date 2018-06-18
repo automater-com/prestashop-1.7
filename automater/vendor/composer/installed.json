@@ -1,44 +1,5 @@
 [
     {
-        "name": "automater-pl/rest-php-sdk",
-        "version": "dev-master-prestashop17",
-        "version_normalized": "dev-master-prestashop17",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/automater-pl/rest-php-sdk.git",
-            "reference": "b4e510d9f69eb51f1f75ade14bab9e13ab601d39"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/automater-pl/rest-php-sdk/zipball/b4e510d9f69eb51f1f75ade14bab9e13ab601d39",
-            "reference": "b4e510d9f69eb51f1f75ade14bab9e13ab601d39",
-            "shasum": ""
-        },
-        "require": {
-            "doctrine/collections": "v1.4.0",
-            "php": ">=5.5"
-        },
-        "time": "2018-02-08T14:59:22+00:00",
-        "type": "library",
-        "installation-source": "source",
-        "autoload": {
-            "psr-4": {
-                "AutomaterSDK\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "proprietary"
-        ],
-        "authors": [
-            {
-                "name": "Automater sp. z o.o.",
-                "email": "kontakt@automater.pl"
-            }
-        ],
-        "description": "PHP SDK for Automater REST API"
-    },
-    {
         "name": "doctrine/collections",
         "version": "v1.4.0",
         "version_normalized": "1.4.0.0",
@@ -106,5 +67,44 @@
             "collections",
             "iterator"
         ]
+    },
+    {
+        "name": "automater-pl/rest-php-sdk",
+        "version": "dev-master-prestashop17",
+        "version_normalized": "dev-master-prestashop17",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/automater-pl/rest-php-sdk.git",
+            "reference": "b4e510d9f69eb51f1f75ade14bab9e13ab601d39"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/automater-pl/rest-php-sdk/zipball/b4e510d9f69eb51f1f75ade14bab9e13ab601d39",
+            "reference": "b4e510d9f69eb51f1f75ade14bab9e13ab601d39",
+            "shasum": ""
+        },
+        "require": {
+            "doctrine/collections": "v1.4.0",
+            "php": ">=5.5"
+        },
+        "time": "2018-02-08T14:59:22+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "AutomaterSDK\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "proprietary"
+        ],
+        "authors": [
+            {
+                "name": "Automater sp. z o.o.",
+                "email": "kontakt@automater.pl"
+            }
+        ],
+        "description": "PHP SDK for Automater REST API"
     }
 ]

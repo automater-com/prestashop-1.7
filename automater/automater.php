@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set("display_errors", "on");
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -22,7 +20,7 @@ class automater extends Module
     {
         $this->name = 'automater';
         $this->tab = 'administration';
-        $this->version = '1.0.2';
+        $this->version = '1.0.3';
         $this->author = 'Automater sp. z o.o.';
         $this->need_instance = 0;
 
@@ -82,7 +80,8 @@ class automater extends Module
 
             Configuration::updateValue('VCAUTOMATER_KEY', '');
             Configuration::updateValue('VCAUTOMATER_SECRET', '');
-            Configuration::updateValue('VCAUTOMATER_ACTIVE', '');
+            Configuration::updateValue('VCAUTOMATER_ACTIVE', 0);
+            Configuration::updateValue('VCAUTOMATER_TRANSACTION_STATUS', 1);
 
             return true;
         }
@@ -94,6 +93,7 @@ class automater extends Module
         Configuration::deleteByName('VCAUTOMATER_KEY');
         Configuration::deleteByName('VCAUTOMATER_SECRET');
         Configuration::deleteByName('VCAUTOMATER_ACTIVE');
+        Configuration::updateValue('VCAUTOMATER_TRANSACTION_STATUS');
 
         $sql = ' DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'vcautomater_trans`';
         if (!Db::getInstance()->execute($sql)) return false;
@@ -260,7 +260,7 @@ class automater extends Module
             $transactionRequest = new \AutomaterSDK\Request\TransactionRequest();
             $transactionRequest->setEmail($customer->email);
             $transactionRequest->setLanguage($automaterLanguage);
-            $transactionRequest->setSendStatusEmail(\AutomaterSDK\Request\TransactionRequest::SEND_STATUS_EMAIL_FALSE);
+            $transactionRequest->setSendStatusEmail(Configuration::get("VCAUTOMATER_TRANSACTION_STATUS") == 1 ? \AutomaterSDK\Request\TransactionRequest::SEND_STATUS_EMAIL_TRUE : \AutomaterSDK\Request\TransactionRequest::SEND_STATUS_EMAIL_FALSE);
             $transactionRequest->setCustom(sprintf($this->l("Order from %s, shop order id: %s.", "automater"), Tools::getShopDomain(true), $order->id));
             $transactionRequest->setProducts($transactionProducts);
 
@@ -419,11 +419,13 @@ class automater extends Module
             $apiKey = strval(Tools::getValue('VCAUTOMATER_KEY'));
             $apiSecret = strval(Tools::getValue('VCAUTOMATER_SECRET'));
             $apiActive = strval(Tools::getValue('VCAUTOMATER_ACTIVE'));
+            $transactionStatus = strval(Tools::getValue('VCAUTOMATER_TRANSACTION_STATUS'));
 
             if (empty($apiKey) && empty($apiSecret)) {
                 Configuration::updateValue('VCAUTOMATER_KEY', '');
                 Configuration::updateValue('VCAUTOMATER_SECRET', '');
                 Configuration::updateValue('VCAUTOMATER_ACTIVE', 0);
+
                 return $this->displayConfirmation($this->l('Settings updated.')) . $this->displayForm();
             }
 
@@ -442,6 +444,7 @@ class automater extends Module
             Configuration::updateValue('VCAUTOMATER_KEY', $apiKey);
             Configuration::updateValue('VCAUTOMATER_SECRET', $apiSecret);
             Configuration::updateValue('VCAUTOMATER_ACTIVE', $apiActive);
+            Configuration::updateValue('VCAUTOMATER_TRANSACTION_STATUS', $transactionStatus);
 
             $output .= $this->displayConfirmation($this->l('Settings updated.'));
         }
@@ -454,57 +457,77 @@ class automater extends Module
         // Get default language
         $default_lang = (int)Configuration::get('PS_LANG_DEFAULT');
 
-        // Init Fields form array
-        $fields_form[0]['form'] = array(
-            'legend' => array(
-                'title' => $this->l('Settings'),
-            ),
-            'input' => array(
-                array(
-                    'type' => 'select',
-                    'label' => $this->l('Status'),
-                    'name' => 'VCAUTOMATER_ACTIVE',
-                    'required' => true,
-                    'options' => [
-                        'query' => [
-                            [
-                                'status_id' => 0,
-                                'name' => $this->l('Disabled')
+			// Init Fields form array
+			$fields_form[0]['form'] = array(
+				'legend' => array(
+					'title' => $this->l('Settings'),
+				),
+				'input' => array(
+					array(
+						'type' => 'select',
+						'label' => $this->l('Status'),
+						'name' => 'VCAUTOMATER_ACTIVE',
+						'required' => true,
+						'options' => [
+							'query' => [
+								[
+									'status_id' => 0,
+									'name' => $this->l('Disabled')
+								],
+								[
+									'status_id' => 1,
+									'name' => $this->l('Enabled')
+								]
+							],
+							'id' => 'status_id',
+							'name' => 'name'
+						],
+						'desc' => $this->l('If API is active Automater module is working with connected product.')
+					),
+					array(
+						'type' => 'text',
+						'label' => $this->l('API Key'),
+						'name' => 'VCAUTOMATER_KEY',
+						'size' => 20,
+						'required' => true,
+						'value' => 'aaa',
+						'desc' => $this->l('You can get this value in Settings / Settings / API tab in user panel.')
+					),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('API Secret'),
+                        'name' => 'VCAUTOMATER_SECRET',
+                        'size' => 20,
+                        'required' => true,
+						'desc' => $this->l('You can get this value in Settings / Settings / API tab in user panel.')
+                    ),
+                    array(
+                        'type' => 'select',
+                        'label' => $this->l('Transaction status'),
+                        'name' => 'VCAUTOMATER_TRANSACTION_STATUS',
+                        'required' => true,
+                        'options' => [
+                            'query' => [
+                                [
+                                    'status_id' => 0,
+                                    'name' => $this->l('Disabled')
+                                ],
+                                [
+                                    'status_id' => 1,
+                                    'name' => $this->l('Enabled')
+                                ]
                             ],
-                            [
-                                'status_id' => 1,
-                                'name' => $this->l('Enabled')
-                            ]
+                            'id' => 'status_id',
+                            'name' => 'name'
                         ],
-                        'id' => 'status_id',
-                        'name' => 'name'
-                    ],
-                    'desc' => $this->l('If API is active Automater module is working with connected product.')
-                ),
-                array(
-                    'type' => 'text',
-                    'label' => $this->l('API Key'),
-                    'name' => 'VCAUTOMATER_KEY',
-                    'size' => 20,
-                    'required' => true,
-                    'value' => 'aaa',
-                    'desc' => $this->l('You can get this value in Settings / Settings / API tab in user panel.')
-                ),
-                array(
-                    'type' => 'text',
-                    'label' => $this->l('API Secret'),
-                    'name' => 'VCAUTOMATER_SECRET',
-                    'size' => 20,
-                    'required' => true,
-                    'desc' => $this->l('You can get this value in Settings / Settings / API tab in user panel.')
-                )
-
-            ),
-            'submit' => array(
-                'title' => $this->l('Save'),
-                'class' => 'btn btn-default pull-right'
-            )
-        );
+                        'desc' => $this->l('If this option is active Automater will send message with transaction status to customer.')
+                    ),
+				),
+				'submit' => array(
+					'title' => $this->l('Save'),
+					'class' => 'btn btn-default pull-right'
+				)
+			);
 
         $helper = new HelperForm();
 
@@ -541,6 +564,7 @@ class automater extends Module
         $helper->fields_value['VCAUTOMATER_SECRET'] = Configuration::get('VCAUTOMATER_SECRET');
         $helper->fields_value['VCAUTOMATER_URL'] = Configuration::get('VCAUTOMATER_URL');
         $helper->fields_value['VCAUTOMATER_ACTIVE'] = Configuration::get('VCAUTOMATER_ACTIVE');
+        $helper->fields_value['VCAUTOMATER_TRANSACTION_STATUS'] = Configuration::get('VCAUTOMATER_TRANSACTION_STATUS');
 
         return $helper->generateForm($fields_form);
     }
