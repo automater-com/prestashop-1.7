@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "d47de8b2dbd9476cdc6a1fc254967e86",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/automater-pl/rest-php-sdk.git",
-                "reference": "b4e510d9f69eb51f1f75ade14bab9e13ab601d39"
+                "reference": "71061bbb4136890b180b78b500fa46d7bc0cc409"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/automater-pl/rest-php-sdk/zipball/b4e510d9f69eb51f1f75ade14bab9e13ab601d39",
-                "reference": "b4e510d9f69eb51f1f75ade14bab9e13ab601d39",
+                "url": "https://api.github.com/repos/automater-pl/rest-php-sdk/zipball/71061bbb4136890b180b78b500fa46d7bc0cc409",
+                "reference": "71061bbb4136890b180b78b500fa46d7bc0cc409",
                 "shasum": ""
             },
             "require": {
@@ -41,7 +41,7 @@
                 }
             ],
             "description": "PHP SDK for Automater REST API",
-            "time": "2018-02-08 14:59:22"
+            "time": "2018-06-18T09:44:05+00:00"
         },
         {
             "name": "doctrine/collections",
