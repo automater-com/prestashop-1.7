@@ -20,7 +20,7 @@ class automater extends Module
     {
         $this->name = 'automater';
         $this->tab = 'administration';
-        $this->version = '1.0.3';
+        $this->version = '1.0.4';
         $this->author = 'Automater sp. z o.o.';
         $this->need_instance = 0;
 
